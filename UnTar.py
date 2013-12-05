@@ -15,13 +15,15 @@ def is_normal_file(tgz=None):
         return True
     else:
         return False
+        #return True
 
 
 if __name__ == '__main__':
-    tgz_s = glob.glob("C:\\StatisticData*.tgz")
+    tgz_s = glob.glob("C:\\logs\\StatisticData*.tgz")
+    print tgz_s
     for tgz in tgz_s:
         if is_normal_file(tgz):
             backup = BackupFile(tgz)
-            backup.extract("c:\\tt\\logs_invalid", "c:\\tt\\logs")
+            backup.extract("c:\\logs\\logs_invalid", "c:\\logs\\logs", "c:\\logs\\idc_billing_files")
 
 

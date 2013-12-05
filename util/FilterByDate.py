@@ -20,6 +20,13 @@ class FilterByDate():
         else:
             return False
 
+    def is_idc_file(self):
+        idc_pattern = "[0-9|A-Za-z]{10,}_[0-9]{12}_idc_[0-9]*.gz"
+        if not re.match(idc_pattern, self.__bill_file_name) is None:
+            return True
+        else:
+            return False
+
     def get_file_date(self):
         str_date = self.__bill_file_name.split("billing")[1].split(".")[0]
         current_date = date.today()

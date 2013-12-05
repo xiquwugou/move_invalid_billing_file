@@ -31,6 +31,13 @@ class FilterBillFile():
         except Exception, e:
             return lines
 
+    def is_idc_file(self):
+        idc_pattern = "[0-9|A-Za-z]{10,}_[0-9]{12}_idc_[0-9]*.gz"
+        if not re.match(idc_pattern, self.bill_file_name) is None:
+            return True
+        else:
+            return False
+
     def match_bill_files(self):
         is_bill_file = False
 
