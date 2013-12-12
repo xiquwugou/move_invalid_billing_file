@@ -13,6 +13,7 @@ def get_bill_name(name):
     try:
         return name.split("/")[-1]
     except Exception, e:
+        print e
         pass
 
 
@@ -29,28 +30,37 @@ class BackupFile(object):
                     tarinfo = backup_file.gettarinfo(fl, "upload/" + os.path.basename(fl))
                     backup_file.addfile(tarinfo, open(fl, 'rb'))
                 except Exception, e:
+                    print e
                     continue
         finally:
             backup_file.close()
 
-    def extract(self, data_dir, log_dir, idc_dir):
+    def extract(self, invalid_dir, log_dir, idc_dir, up_dir):
         backup_file = tarfile.open(self.__filename, 'r')
         try:
             try:
                 for info in backup_file.getmembers():
+
+                    info.name = os.path.basename(info.name)
                     bill_file_name = get_bill_name(info.name)
                     if bill_file_name is None:
                         continue
                     is_bill_file = FilterBillFile(bill_file_name).match_bill_files()
+                    is_up_file = FilterBillFile(bill_file_name).is_up_file()
                     is_idc_file = FilterBillFile(bill_file_name).is_idc_file()
-                    is_fc_file_in_count_day = FilterByDate(bill_file_name).is_in_counting_day()
+                    #is_fc_file_in_count_day = FilterByDate(bill_file_name).is_in_counting_day()
                     if is_bill_file:
                         if is_idc_file:
                             backup_file.extract(info, idc_dir)
+                        elif is_up_file:
+                            backup_file.extract(info, up_dir)
                         else:
-                            backup_file.extract(info, log_dir)
+                            #backup_file.extract(info, log_dir)
+                            pass
                     else:
-                        backup_file.extract(info, data_dir)
+                        if "upload" in info.name:
+                            continue
+                        backup_file.extract(info, invalid_dir)
             except Exception, e:
                 print e
         finally:

@@ -21,9 +21,13 @@ def is_normal_file(tgz=None):
 if __name__ == '__main__':
     tgz_s = glob.glob("C:\\logs\\StatisticData*.tgz")
     print tgz_s
-    for tgz in tgz_s:
-        if is_normal_file(tgz):
-            backup = BackupFile(tgz)
-            backup.extract("c:\\logs\\logs_invalid", "c:\\logs\\logs", "c:\\logs\\idc_billing_files")
+    try:
+        for tgz in tgz_s:
+            if is_normal_file(tgz):
+                backup = BackupFile(tgz)
+                backup.extract("c:\\logs\\logs_invalid", "c:\\logs\\logs", "c:\\logs\\idc_billing_files",
+                               "c:\\logs\\up_dir")
+    except Exception, e:
+        print e
 
 

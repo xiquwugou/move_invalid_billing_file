@@ -7,8 +7,12 @@ __author__ = 'song'
 
 
 def parse_line(line):
-    result = line.split("=")
-    return result[1]
+    try:
+        result = line.split("=")
+        return result[1]
+    except Exception, e:
+        print e
+        pass
 
 
 class FilterBillFile():
@@ -29,6 +33,7 @@ class FilterBillFile():
                         lines.append(pattern)
                 return lines
         except Exception, e:
+            print e
             return lines
 
     def is_idc_file(self):
@@ -37,6 +42,24 @@ class FilterBillFile():
             return True
         else:
             return False
+
+    @staticmethod
+    def read_file_as_list():
+        #lines = open("/Application/billing/bin/up_device_id.txt", 'r').read().splitlines()
+        lines = open('E:\\logs\\up_device_id.txt', 'r').read().splitlines()
+        return lines
+
+    def is_up_file(self):
+        #print self.bill_file_name
+        up_devices = self.read_file_as_list()
+        for device in up_devices:
+            #print device
+            #print up_devices
+            if device in self.bill_file_name:
+                return True
+            else:
+                continue
+        return False
 
     def match_bill_files(self):
         is_bill_file = False
@@ -67,6 +90,11 @@ class MyTest(unittest.TestCase):
     def test_match_invalid_bill_file(self):
         f = FilterBillFile("01002913gd_CHN-XA-1.billing0922102252.000517466.log.tmp").match_bill_files()
         self.assertFalse(f)
+
+    def test_is_up_file(self):
+        f = FilterBillFile("26071413DC_USA-LA-1.billing1212085618.000615573.log").is_up_file()
+        self.assertTrue(f)
+
 
     def test_match_bill_files(self):
         f = FilterBillFile("01002913g_CHN-XA-1.billing0922102252.000517466.log")
