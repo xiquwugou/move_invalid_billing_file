@@ -2,6 +2,7 @@
 #encoding: utf-8
 import re
 import unittest
+import config
 
 __author__ = 'song'
 
@@ -46,7 +47,7 @@ class FilterBillFile():
     @staticmethod
     def read_file_as_list():
         #lines = open("/Application/billing/bin/up_device_id.txt", 'r').read().splitlines()
-        lines = open('E:\\logs\\up_device_id.txt', 'r').read().splitlines()
+        lines = open(config.up_device_path+'up_device_id.txt', 'r').read().splitlines()
         return lines
 
     def is_up_file(self):

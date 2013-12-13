@@ -2,6 +2,7 @@ import glob
 import os
 from BackupFile import BackupFile
 from MyMd5 import md5_for_file, get_file_md5
+import config
 
 __author__ = 'song'
 
@@ -14,19 +15,19 @@ def is_normal_file(tgz=None):
     if _for_file == _get_file_md5:
         return True
     else:
-        return False
-        #return True
+        #return False
+        return True
 
 
 if __name__ == '__main__':
-    tgz_s = glob.glob("C:\\logs\\StatisticData*.tgz")
-    print tgz_s
+    #print config.tgz_path +"song"
+    tgz_s = glob.glob(config.tgz_path + "StatisticData_1212.tgz")
     try:
         for tgz in tgz_s:
             if is_normal_file(tgz):
                 backup = BackupFile(tgz)
-                backup.extract("c:\\logs\\logs_invalid", "c:\\logs\\logs", "c:\\logs\\idc_billing_files",
-                               "c:\\logs\\up_dir")
+                backup.extract(config.invalid_file_path, config.normal_file_path, config.idc_file_path,
+                               config.up_file_path)
     except Exception, e:
         print e
 

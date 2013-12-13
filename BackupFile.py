@@ -36,6 +36,7 @@ class BackupFile(object):
             backup_file.close()
 
     def extract(self, invalid_dir, log_dir, idc_dir, up_dir):
+        print self.__filename
         backup_file = tarfile.open(self.__filename, 'r')
         try:
             try:
